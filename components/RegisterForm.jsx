@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth"
+import { Mail, Lock, User, UserPlus } from "lucide-react"
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -58,7 +59,10 @@ export default function RegisterForm() {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nome">Nome completo</label>
+          <label htmlFor="nome">
+            <User size={16} className="inline mr-1" />
+            Nome completo
+          </label>
           <input
             type="text"
             id="nome"
@@ -67,11 +71,16 @@ export default function RegisterForm() {
             value={formData.nome}
             onChange={handleChange}
             required
+            placeholder="Seu nome completo"
+            autoComplete="name"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="email">E-mail</label>
+          <label htmlFor="email">
+            <Mail size={16} className="inline mr-1" />
+            E-mail
+          </label>
           <input
             type="email"
             id="email"
@@ -80,11 +89,16 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             required
+            placeholder="seu@email.com"
+            autoComplete="email"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Senha</label>
+          <label htmlFor="password">
+            <Lock size={16} className="inline mr-1" />
+            Senha
+          </label>
           <input
             type="password"
             id="password"
@@ -94,11 +108,16 @@ export default function RegisterForm() {
             onChange={handleChange}
             required
             minLength={6}
+            placeholder="••••••••"
+            autoComplete="new-password"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="confirmPassword">Confirmar senha</label>
+          <label htmlFor="confirmPassword">
+            <Lock size={16} className="inline mr-1" />
+            Confirmar senha
+          </label>
           <input
             type="password"
             id="confirmPassword"
@@ -107,11 +126,23 @@ export default function RegisterForm() {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
+            placeholder="••••••••"
+            autoComplete="new-password"
           />
         </div>
 
         <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-          {loading ? "Cadastrando..." : "Cadastrar"}
+          {loading ? (
+            <>
+              <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
+              Cadastrando...
+            </>
+          ) : (
+            <>
+              <UserPlus size={16} className="inline mr-1" />
+              Cadastrar
+            </>
+          )}
         </button>
       </form>
 

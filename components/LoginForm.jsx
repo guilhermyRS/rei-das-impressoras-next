@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth"
+import { Mail, Lock, LogIn } from "lucide-react"
 
 export default function LoginForm() {
   const [credentials, setCredentials] = useState({
@@ -49,7 +50,10 @@ export default function LoginForm() {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">E-mail</label>
+          <label htmlFor="email">
+            <Mail size={16} className="inline mr-1" />
+            E-mail
+          </label>
           <input
             type="email"
             id="email"
@@ -58,11 +62,16 @@ export default function LoginForm() {
             value={credentials.email}
             onChange={handleChange}
             required
+            placeholder="seu@email.com"
+            autoComplete="email"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Senha</label>
+          <label htmlFor="password">
+            <Lock size={16} className="inline mr-1" />
+            Senha
+          </label>
           <input
             type="password"
             id="password"
@@ -71,11 +80,23 @@ export default function LoginForm() {
             value={credentials.password}
             onChange={handleChange}
             required
+            placeholder="••••••••"
+            autoComplete="current-password"
           />
         </div>
 
         <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-          {loading ? "Entrando..." : "Entrar"}
+          {loading ? (
+            <>
+              <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
+              Entrando...
+            </>
+          ) : (
+            <>
+              <LogIn size={16} className="inline mr-1" />
+              Entrar
+            </>
+          )}
         </button>
       </form>
 

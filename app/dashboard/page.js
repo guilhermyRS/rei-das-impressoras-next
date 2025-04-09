@@ -1,21 +1,30 @@
-'use client'
+"use client"
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Dashboard from '@/components/Dashboard'
-import { useAuth } from '@/lib/auth'
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Dashboard from "@/components/Dashboard"
+import { useAuth } from "@/lib/auth"
 
 export default function DashboardPage() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const router = useRouter()
-  
+
   useEffect(() => {
-    if (!user) {
-      router.push('/login')
+    if (!loading && !user) {
+      router.push("/login")
     }
-  }, [user, router])
-  
+  }, [user, router, loading])
+
+  if (loading) {
+    return (
+      <div className="loading-container" style={{ minHeight: "100vh" }}>
+        <div className="loading-spinner"></div>
+        <p>Carregando...</p>
+      </div>
+    )
+  }
+
   if (!user) return null
-  
+
   return <Dashboard />
 }
