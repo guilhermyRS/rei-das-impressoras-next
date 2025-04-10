@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { createClient } from "@supabase/supabase-js"
+
+// Create admin client directly in the API route
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+)
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
@@ -10,16 +16,16 @@ export async function GET(request) {
   }
 
   try {
-    // Tentar baixar o arquivo diretamente
-    const { data, error } = await supabase.storage.from("uploads").download(path)
+    // Try to download the file directly using admin client
+    const { data, error } = await supabaseAdmin.storage.from("uploads").download(path)
 
     if (error) {
-      console.error("Erro ao baixar arquivo:", error)
+      console.error("Error downloading file:", error)
 
-      // Resposta de erro mais amigável
+      // More user-friendly error response
       return new NextResponse(
         JSON.stringify({
-          error: "Arquivo não encontrado ou inacessível",
+          error: "File not found or inaccessible",
           details: error.message,
         }),
         {
@@ -32,10 +38,10 @@ export async function GET(request) {
       )
     }
 
-    // Determinar o tipo de conteúdo
+    // Determine content type
     const contentType = path.toLowerCase().endsWith(".pdf") ? "application/pdf" : "application/octet-stream"
 
-    // Retornar o arquivo como resposta
+    // Return file as response
     return new NextResponse(data, {
       headers: {
         "Content-Type": contentType,
@@ -46,12 +52,12 @@ export async function GET(request) {
       },
     })
   } catch (error) {
-    console.error("Erro ao obter arquivo:", error)
+    console.error("Error getting file:", error)
 
-    // Resposta de erro mais detalhada
+    // More detailed error response
     return new NextResponse(
       JSON.stringify({
-        error: "Erro ao processar a solicitação",
+        error: "Error processing request",
         details: error.message,
       }),
       {

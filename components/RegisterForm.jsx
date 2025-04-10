@@ -8,7 +8,7 @@ import { Mail, Lock, User, UserPlus } from "lucide-react"
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
-    nome: "",
+    full_name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -30,20 +30,20 @@ export default function RegisterForm() {
 
     // Validate password confirmation
     if (formData.password !== formData.confirmPassword) {
-      setError("As senhas não coincidem")
+      setError("Passwords don't match")
       setLoading(false)
       return
     }
 
-    const { error } = await register(formData.email, formData.password, formData.nome)
+    const { error } = await register(formData.email, formData.password, formData.full_name)
 
     setLoading(false)
 
     if (error) {
       setError(error.message)
     } else {
-      // Adicionar cookie para autenticação do lado do servidor também
-      // Isso vai funcionar com o middleware.js
+      // Add cookie for server-side authentication
+      // This will work with middleware.js
       const auth = JSON.parse(localStorage.getItem("auth"))
       document.cookie = `auth=${JSON.stringify(auth)}; path=/; max-age=${60 * 60}; SameSite=Strict`
 
@@ -53,25 +53,25 @@ export default function RegisterForm() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">Criar Conta</h2>
+      <h2 className="auth-title">Create Account</h2>
 
       {error && <div className="status-message status-error">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nome">
+          <label htmlFor="full_name">
             <User size={16} className="inline mr-1" />
-            Nome completo
+            Full name
           </label>
           <input
             type="text"
-            id="nome"
-            name="nome"
+            id="full_name"
+            name="full_name"
             className="form-control"
-            value={formData.nome}
+            value={formData.full_name}
             onChange={handleChange}
             required
-            placeholder="Seu nome completo"
+            placeholder="Your full name"
             autoComplete="name"
           />
         </div>
@@ -79,7 +79,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="email">
             <Mail size={16} className="inline mr-1" />
-            E-mail
+            Email
           </label>
           <input
             type="email"
@@ -89,7 +89,7 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            placeholder="seu@email.com"
+            placeholder="your@email.com"
             autoComplete="email"
           />
         </div>
@@ -97,7 +97,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="password">
             <Lock size={16} className="inline mr-1" />
-            Senha
+            Password
           </label>
           <input
             type="password"
@@ -116,7 +116,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="confirmPassword">
             <Lock size={16} className="inline mr-1" />
-            Confirmar senha
+            Confirm password
           </label>
           <input
             type="password"
@@ -135,19 +135,19 @@ export default function RegisterForm() {
           {loading ? (
             <>
               <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
-              Cadastrando...
+              Registering...
             </>
           ) : (
             <>
               <UserPlus size={16} className="inline mr-1" />
-              Cadastrar
+              Register
             </>
           )}
         </button>
       </form>
 
       <div className="auth-footer">
-        Já tem conta? <Link href="/login">Faça login</Link>
+        Already have an account? <Link href="/login">Log in</Link>
       </div>
     </div>
   )

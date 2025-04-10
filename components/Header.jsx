@@ -39,37 +39,37 @@ export default function Header() {
 
           {user && (
             <div className="user-info">
-              <span>Olá, {getFirstName(user.nome)}</span>
+              <span>Hello, {getFirstName(user.full_name)}</span>
               <div className="relative">
                 <button
                   className="avatar-btn"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  aria-label="Menu do usuário"
+                  aria-label="User menu"
                 >
-                  <div className="avatar">{getInitials(user.nome)}</div>
+                  <div className="avatar">{getInitials(user.full_name)}</div>
                 </button>
-                
+
                 {isDropdownOpen && (
                   <div className="dropdown-menu">
                     <Link href="/dashboard" className="dropdown-item">
                       <Layout size={16} />
-                      <span>Painel</span>
+                      <span>Dashboard</span>
                     </Link>
                     <Link href="/configuracoes" className="dropdown-item">
                       <Settings size={16} />
-                      <span>Configurações</span>
+                      <span>Settings</span>
                     </Link>
                     <Link href="/sobre" className="dropdown-item">
                       <Users size={16} />
-                      <span>Sobre nós</span>
+                      <span>About us</span>
                     </Link>
                     <Link href="/parceria" className="dropdown-item">
                       <HandshakeIcon size={16} />
-                      <span>Parceria</span>
+                      <span>Partnership</span>
                     </Link>
                     <button onClick={handleLogout} className="dropdown-item">
                       <LogOut size={16} />
-                      <span>Sair</span>
+                      <span>Logout</span>
                     </button>
                   </div>
                 )}

@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { createClient } from "@supabase/supabase-js"
+
+// Create admin client directly in the API route
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+)
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
@@ -10,17 +16,17 @@ export async function GET(request) {
   }
 
   try {
-    // Verificar se o arquivo existe no bucket
-    const { data, error } = await supabase.storage.from("uploads").download(path)
+    // Check if file exists in bucket using admin client
+    const { data, error } = await supabaseAdmin.storage.from("uploads").download(path)
 
     if (error) {
-      console.error("Erro ao verificar arquivo:", error)
+      console.error("Error checking file:", error)
       return NextResponse.json({ exists: false, error: error.message }, { status: 200 })
     }
 
     return NextResponse.json({ exists: true }, { status: 200 })
   } catch (error) {
-    console.error("Erro ao verificar arquivo:", error)
-    return NextResponse.json({ exists: false, error: "Erro ao verificar arquivo" }, { status: 200 })
+    console.error("Error checking file:", error)
+    return NextResponse.json({ exists: false, error: "Error checking file" }, { status: 200 })
   }
 }

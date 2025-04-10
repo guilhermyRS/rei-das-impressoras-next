@@ -33,8 +33,8 @@ export default function LoginForm() {
     if (error) {
       setError(error.message)
     } else {
-      // Adicionar cookie para autenticação do lado do servidor também
-      // Isso vai funcionar com o middleware.js
+      // Add cookie for server-side authentication
+      // This will work with middleware.js
       const auth = JSON.parse(localStorage.getItem("auth"))
       document.cookie = `auth=${JSON.stringify(auth)}; path=/; max-age=${60 * 60}; SameSite=Strict`
 
@@ -44,7 +44,7 @@ export default function LoginForm() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">Acesso ao Sistema</h2>
+      <h2 className="auth-title">System Access</h2>
 
       {error && <div className="status-message status-error">{error}</div>}
 
@@ -52,7 +52,7 @@ export default function LoginForm() {
         <div className="form-group">
           <label htmlFor="email">
             <Mail size={16} className="inline mr-1" />
-            E-mail
+            Email
           </label>
           <input
             type="email"
@@ -62,7 +62,7 @@ export default function LoginForm() {
             value={credentials.email}
             onChange={handleChange}
             required
-            placeholder="seu@email.com"
+            placeholder="your@email.com"
             autoComplete="email"
           />
         </div>
@@ -70,7 +70,7 @@ export default function LoginForm() {
         <div className="form-group">
           <label htmlFor="password">
             <Lock size={16} className="inline mr-1" />
-            Senha
+            Password
           </label>
           <input
             type="password"
@@ -89,19 +89,19 @@ export default function LoginForm() {
           {loading ? (
             <>
               <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
-              Entrando...
+              Logging in...
             </>
           ) : (
             <>
               <LogIn size={16} className="inline mr-1" />
-              Entrar
+              Login
             </>
           )}
         </button>
       </form>
 
       <div className="auth-footer">
-        Não tem conta? <Link href="/register">Cadastre-se</Link>
+        Don't have an account? <Link href="/register">Sign up</Link>
       </div>
     </div>
   )
