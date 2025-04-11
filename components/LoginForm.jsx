@@ -44,7 +44,7 @@ export default function LoginForm() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">System Access</h2>
+      <h2 className="auth-title">Acesso ao Sistema</h2>
 
       {error && <div className="status-message status-error">{error}</div>}
 
@@ -62,7 +62,7 @@ export default function LoginForm() {
             value={credentials.email}
             onChange={handleChange}
             required
-            placeholder="your@email.com"
+            placeholder="seu@email.com"
             autoComplete="email"
           />
         </div>
@@ -70,7 +70,7 @@ export default function LoginForm() {
         <div className="form-group">
           <label htmlFor="password">
             <Lock size={16} className="inline mr-1" />
-            Password
+            Senha
           </label>
           <input
             type="password"
@@ -89,19 +89,19 @@ export default function LoginForm() {
           {loading ? (
             <>
               <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
-              Logging in...
+              Entrando...
             </>
           ) : (
             <>
               <LogIn size={16} className="inline mr-1" />
-              Login
+              Entrar
             </>
           )}
         </button>
       </form>
 
       <div className="auth-footer">
-        Don't have an account? <Link href="/register">Sign up</Link>
+        Não tem uma conta? <Link href="/register">Cadastre-se</Link>
       </div>
     </div>
   )

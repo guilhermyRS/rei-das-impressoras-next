@@ -30,7 +30,7 @@ export default function RegisterForm() {
 
     // Validate password confirmation
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords don't match")
+      setError("As senhas não coincidem")
       setLoading(false)
       return
     }
@@ -53,7 +53,7 @@ export default function RegisterForm() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">Create Account</h2>
+      <h2 className="auth-title">Criar Conta</h2>
 
       {error && <div className="status-message status-error">{error}</div>}
 
@@ -61,7 +61,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="full_name">
             <User size={16} className="inline mr-1" />
-            Full name
+            Nome completo
           </label>
           <input
             type="text"
@@ -71,7 +71,7 @@ export default function RegisterForm() {
             value={formData.full_name}
             onChange={handleChange}
             required
-            placeholder="Your full name"
+            placeholder="Seu nome completo"
             autoComplete="name"
           />
         </div>
@@ -89,7 +89,7 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            placeholder="your@email.com"
+            placeholder="seu@email.com"
             autoComplete="email"
           />
         </div>
@@ -97,7 +97,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="password">
             <Lock size={16} className="inline mr-1" />
-            Password
+            Senha
           </label>
           <input
             type="password"
@@ -116,7 +116,7 @@ export default function RegisterForm() {
         <div className="form-group">
           <label htmlFor="confirmPassword">
             <Lock size={16} className="inline mr-1" />
-            Confirm password
+            Confirmar senha
           </label>
           <input
             type="password"
@@ -135,19 +135,19 @@ export default function RegisterForm() {
           {loading ? (
             <>
               <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
-              Registering...
+              Cadastrando...
             </>
           ) : (
             <>
               <UserPlus size={16} className="inline mr-1" />
-              Register
+              Cadastrar
             </>
           )}
         </button>
       </form>
 
       <div className="auth-footer">
-        Already have an account? <Link href="/login">Log in</Link>
+        Já tem uma conta? <Link href="/login">Entrar</Link>
       </div>
     </div>
   )

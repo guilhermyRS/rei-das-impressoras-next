@@ -97,7 +97,7 @@ header {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 3px solid var( --primary);
+  border: 3px solid var(--primary);
   background-color: var(--background);
   color: var(--foreground);
   display: flex;
@@ -116,9 +116,9 @@ header {
   right: 0;
   top: 100%;
   margin-top: 0.5rem;
-  background-color:  var(--background);
+  background-color: var(--background);
   border-radius: 8px;
-  border: 1px solid var( --primary);
+  border: 1px solid var(--primary);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   z-index: 50;
@@ -991,6 +991,70 @@ input[type="file"] {
   box-shadow: none;
 }
 
+/* Add styles for color printing options */
+.color-printing-options {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #2c2c2c;
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.color-options-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+}
+
+.color-options-container {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.color-option-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  color: var(--foreground);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.color-option-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.color-option-btn.active {
+  border-color: var(--primary-bright);
+  background-color: rgba(0, 109, 255, 0.1);
+}
+
+.color-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bw-icon {
+  background: linear-gradient(135deg, #333 0%, #666 100%);
+  border: 1px solid #999;
+}
+
+.color-icon-full {
+  background: linear-gradient(135deg, #f00 0%, #ff0 25%, #0f0 50%, #0ff 75%, #00f 100%);
+  border: 1px solid #fff;
+}
+
 /* Responsividade para telas pequenas */
 @media (max-width: 360px) {
   .file-input-button {
@@ -1022,3 +1086,11 @@ input[type="file"] {
     min-height: 250px;
   }
 }
+
+/* Make color options responsive */
+@media (max-width: 480px) {
+  .color-options-container {
+    flex-direction: column;
+  }
+}
+

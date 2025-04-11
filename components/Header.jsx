@@ -39,12 +39,12 @@ export default function Header() {
 
           {user && (
             <div className="user-info">
-              <span>Hello, {getFirstName(user.full_name)}</span>
+              <span>Olá, {getFirstName(user.full_name)}</span>
               <div className="relative">
                 <button
                   className="avatar-btn"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  aria-label="User menu"
+                  aria-label="Menu do usuário"
                 >
                   <div className="avatar">{getInitials(user.full_name)}</div>
                 </button>
@@ -53,23 +53,23 @@ export default function Header() {
                   <div className="dropdown-menu">
                     <Link href="/dashboard" className="dropdown-item">
                       <Layout size={16} />
-                      <span>Dashboard</span>
+                      <span>Painel</span>
                     </Link>
                     <Link href="/configuracoes" className="dropdown-item">
                       <Settings size={16} />
-                      <span>Settings</span>
+                      <span>Configurações</span>
                     </Link>
                     <Link href="/sobre" className="dropdown-item">
                       <Users size={16} />
-                      <span>About us</span>
+                      <span>Sobre nós</span>
                     </Link>
                     <Link href="/parceria" className="dropdown-item">
                       <HandshakeIcon size={16} />
-                      <span>Partnership</span>
+                      <span>Parceria</span>
                     </Link>
                     <button onClick={handleLogout} className="dropdown-item">
                       <LogOut size={16} />
-                      <span>Logout</span>
+                      <span>Sair</span>
                     </button>
                   </div>
                 )}

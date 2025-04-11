@@ -9,11 +9,12 @@ const PDFPreviewModal = ({
   historyFile,
   onClose,
   pageCount,
-  totalPrice,
+  totalPrice = 0, // Adicionando valor padrão para evitar o erro
   onConfirm,
   onDownload,
   loading,
   isHistory = false,
+  isColorPrinting = false,
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -298,20 +299,19 @@ const PDFPreviewModal = ({
           {!isHistory && (
             <div className="pdf-info">
               <p>
-                Total de páginas: <strong>{pageCount}</strong>
+                Total de páginas: <strong>{pageCount || 0}</strong>
               </p>
               <p>
-                Valor total: <strong>R$ {totalPrice.toFixed(2)}</strong>
+                Tipo de impressão: <strong>{isColorPrinting ? "Colorido" : "Preto e Branco"}</strong>
+              </p>
+              <p>
+                Valor total: <strong>R$ {(totalPrice || 0).toFixed(2)}</strong>
               </p>
             </div>
           )}
 
           <div className="pdf-modal-buttons">
-            <button 
-              onClick={isHistory ? onDownload : onConfirm} 
-              className="modal-button primary" 
-              disabled={loading}
-            >
+            <button onClick={isHistory ? onDownload : onConfirm} className="modal-button primary" disabled={loading}>
               {loading ? (
                 <>
                   <span className="loading-spinner inline-block w-4 h-4 mr-2"></span>
@@ -320,7 +320,7 @@ const PDFPreviewModal = ({
               ) : (
                 <>
                   <Download size={18} />
-                  <span>Baixar</span>
+                  <span>{isHistory ? "Baixar" : "Continuar"}</span>
                 </>
               )}
             </button>

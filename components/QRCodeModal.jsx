@@ -34,17 +34,15 @@ const QRCodeModal = ({ qrCode, onClose, onCopyCode, paymentStatus }) => {
         </button>
 
         <div className="modal-content">
-          <h3 className="modal-title">Pagamento via Pix</h3>
+          <h3 className="modal-title">Escaneie o QR Code Pix</h3>
 
           <div className="qr-code-wrapper">
-            {qrCode.qr_code_base64 ? (
-              <img src={`data:image/png;base64,${qrCode.qr_code_base64}`} alt="QR Code Pix" className="qr-code-image" />
-            ) : (
-              <p className="text-red-500">Erro ao carregar QR Code</p>
-            )}
+            <img src={`data:image/png;base64,${qrCode.qr_code_base64}`} alt="QR Code Pix" className="qr-code-image" />
           </div>
 
-          <p className="modal-description">Escaneie o QR Code com o aplicativo do seu banco</p>
+          <p className="modal-description">
+            Escaneie o código QR com o aplicativo do seu banco para realizar o pagamento Pix.
+          </p>
 
           <div className="modal-buttons">
             <button onClick={handleCopyCode} className={`modal-button primary ${copied ? "copied" : ""}`}>
@@ -68,19 +66,17 @@ const QRCodeModal = ({ qrCode, onClose, onCopyCode, paymentStatus }) => {
 
           {paymentStatus && (
             <div className={`payment-status ${paymentStatus === "approved" ? "approved" : "pending"}`}>
-              <p>
-                {paymentStatus === "approved" ? (
-                  <>
-                    <CheckCircle size={18} />
-                    Pagamento aprovado!
-                  </>
-                ) : (
-                  <>
-                    <Clock size={18} className="pulse" />
-                    Aguardando pagamento...
-                  </>
-                )}
-              </p>
+              {paymentStatus === "approved" ? (
+                <p>
+                  <CheckCircle size={16} />
+                  Pagamento aprovado!
+                </p>
+              ) : (
+                <p className="pulse">
+                  <Clock size={16} />
+                  Aguardando pagamento...
+                </p>
+              )}
             </div>
           )}
         </div>
