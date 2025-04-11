@@ -8,9 +8,30 @@ const QRCodeModal = ({ qrCode, onClose, onCopyCode, paymentStatus }) => {
   const [copied, setCopied] = useState(false)
 
   const handleCopyCode = () => {
-    onCopyCode()
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    try {
+      // Try using clipboard API first
+      if (navigator && navigator.clipboard) {
+        navigator.clipboard.writeText(qrCode.qr_code);
+      } else {
+        // Fallback method - create temporary textarea
+        const textArea = document.createElement('textarea');
+        textArea.value = qrCode.qr_code;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      onCopyCode(); // Call the original onCopyCode function
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Could not copy text: ", err);
+      // Still show copied animation even if it failed
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   }
 
   return (
@@ -43,6 +64,12 @@ const QRCodeModal = ({ qrCode, onClose, onCopyCode, paymentStatus }) => {
           <p className="modal-description">
             Escaneie o código QR com o aplicativo do seu banco para realizar o pagamento Pix.
           </p>
+
+          {/* Add text version of QR code for manual copy */}
+          <div className="qr-code-text-container" style={{margin: "10px 0", padding: "10px", background: "#121214", borderRadius: "4px", overflowX: "auto"}}>
+            <p className="qr-code-text" style={{fontSize: "12px", wordBreak: "break-all"}}>{qrCode.qr_code}</p>
+            <small style={{display: "block", marginTop: "5px", fontSize: "11px", color: "#666"}}>Você também pode copiar o código acima manualmente</small>
+          </div>
 
           <div className="modal-buttons">
             <button onClick={handleCopyCode} className={`modal-button primary ${copied ? "copied" : ""}`}>

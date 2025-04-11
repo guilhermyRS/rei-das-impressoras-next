@@ -38,7 +38,7 @@ export default function LoginForm() {
       const auth = JSON.parse(localStorage.getItem("auth"))
       document.cookie = `auth=${JSON.stringify(auth)}; path=/; max-age=${60 * 60}; SameSite=Strict`
 
-      router.push("/dashboard")
+      router.push("/print-center")
     }
   }
 

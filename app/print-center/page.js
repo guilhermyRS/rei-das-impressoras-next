@@ -2,10 +2,10 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import Dashboard from "@/components/Dashboard"
+import PrintCenter from "@/components/PrintCenter"
 import { useAuth } from "@/lib/auth"
 
-export default function DashboardPage() {
+export default function PrintCenterPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
 
@@ -26,5 +26,5 @@ export default function DashboardPage() {
 
   if (!user) return null
 
-  return <Dashboard />
+  return <PrintCenter />
 }

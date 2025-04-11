@@ -4,13 +4,16 @@ import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth"
 import { uploadFileWithPayment, getUserFiles } from "@/lib/files"
 import { countPdfPages, createPixPayment, checkPaymentStatus } from "@/lib/mercadopago"
-import QRCodeModal from "@/components/QRCodeModal"
-import SuccessAnimation from "@/components/SuccessAnimation"
-import PDFPreviewModal from "@/components/PDFPreviewModal"
-import { AnimatePresence } from "framer-motion"
+import dynamic from "next/dynamic"
 import { Upload, Clock, CheckCircle, Eye, Printer, Download, AlertTriangle } from "lucide-react"
+import { AnimatePresence } from "framer-motion"
 
-export default function Dashboard() {
+// Use dynamic imports with ssr:false for components that rely on browser APIs
+const QRCodeModal = dynamic(() => import("@/components/QRCodeModal"), { ssr: false })
+const SuccessAnimation = dynamic(() => import("@/components/SuccessAnimation"), { ssr: false })
+const PDFPreviewModal = dynamic(() => import("@/components/PDFPreviewModal"), { ssr: false })
+
+export default function PrintCenter() {
   const [file, setFile] = useState(null)
   const [status, setStatus] = useState("")
   const [statusType, setStatusType] = useState("")
@@ -39,6 +42,7 @@ export default function Dashboard() {
 
   const fileInputRef = useRef(null)
 
+  // Client-side only effects
   useEffect(() => {
     if (user) {
       loadUserFiles()
@@ -227,15 +231,23 @@ export default function Dashboard() {
     handleUploadAfterPayment()
   }
 
+  // Client-side safe date formatting
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    return new Intl.DateTimeFormat("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date)
+    if (typeof window === "undefined") return dateString
+
+    try {
+      const date = new Date(dateString)
+      return new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date)
+    } catch (error) {
+      console.error("Error formatting date:", error)
+      return dateString
+    }
   }
 
   const renderStatusBadge = (status) => {
@@ -339,10 +351,10 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="dashboard">
+    <div className="print-center">
       <div className="container">
-        <div className="dashboard-header">
-          <h2 className="dashboard-title">Painel de Impressão</h2>
+        <div className="print-center-header">
+          <h2 className="print-center-title">Central de Impressão</h2>
         </div>
 
         <div className="file-upload-container">
@@ -428,7 +440,9 @@ export default function Dashboard() {
             </div>
           )}
 
-          {!loading && files.length === 0 && <p className="text-center py-4 text-muted">Nenhum arquivo enviado ainda.</p>}
+          {!loading && files.length === 0 && (
+            <p className="text-center py-4 text-muted">Nenhum arquivo enviado ainda.</p>
+          )}
 
           {!loading && files.length > 0 && (
             <div className="file-cards">
@@ -464,41 +478,46 @@ export default function Dashboard() {
         </div>
 
         <AnimatePresence mode="wait">
-          {showSuccess && <SuccessAnimation key="success" onComplete={handleSuccessComplete} />}
-          {pixQRCode && (
-            <QRCodeModal
-              key="qrcode"
-              qrCode={pixQRCode}
-              onClose={() => setPixQRCode(null)}
-              onCopyCode={() => {
-                navigator.clipboard.writeText(pixQRCode.qr_code)
-                setStatus("Código Pix copiado!")
-                setStatusType("success")
-              }}
-              paymentStatus={paymentStatus}
-            />
-          )}
-          {showPreview && previewFile && (
-            <PDFPreviewModal
-              key="preview"
-              file={previewFile}
-              onClose={() => setShowPreview(false)}
-              pageCount={pageCount}
-              totalPrice={totalPrice}
-              onConfirm={handleCreatePayment}
-              loading={loading}
-              isColorPrinting={isColorPrinting}
-            />
-          )}
-          {showHistoryPreview && selectedHistoryFile && (
-            <PDFPreviewModal
-              key="history-preview"
-              historyFile={selectedHistoryFile}
-              onClose={() => setShowHistoryPreview(false)}
-              onDownload={() => handleDownload(selectedHistoryFile)}
-              loading={downloadLoading}
-              isHistory={true}
-            />
+          {/* Only render these modals client-side */}
+          {typeof window !== "undefined" && (
+            <>
+              {showSuccess && <SuccessAnimation key="success" onComplete={handleSuccessComplete} />}
+              {pixQRCode && (
+                <QRCodeModal
+                  key="qrcode"
+                  qrCode={pixQRCode}
+                  onClose={() => setPixQRCode(null)}
+                  onCopyCode={() => {
+                    // SafeClipboard call handled inside QRCodeModal now
+                    setStatus("Código Pix copiado!")
+                    setStatusType("success")
+                  }}
+                  paymentStatus={paymentStatus}
+                />
+              )}
+              {showPreview && previewFile && (
+                <PDFPreviewModal
+                  key="preview"
+                  file={previewFile}
+                  onClose={() => setShowPreview(false)}
+                  pageCount={pageCount}
+                  totalPrice={totalPrice}
+                  onConfirm={handleCreatePayment}
+                  loading={loading}
+                  isColorPrinting={isColorPrinting}
+                />
+              )}
+              {showHistoryPreview && selectedHistoryFile && (
+                <PDFPreviewModal
+                  key="history-preview"
+                  historyFile={selectedHistoryFile}
+                  onClose={() => setShowHistoryPreview(false)}
+                  onDownload={() => handleDownload(selectedHistoryFile)}
+                  loading={downloadLoading}
+                  isHistory={true}
+                />
+              )}
+            </>
           )}
         </AnimatePresence>
       </div>

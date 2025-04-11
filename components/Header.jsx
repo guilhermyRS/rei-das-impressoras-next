@@ -34,7 +34,7 @@ export default function Header() {
       <div className="container">
         <div className="header-content">
           <div className="logo">
-            <Link href={user ? "/dashboard" : "/login"}>Rei das Impressoras</Link>
+            <Link href={user ? "/print-center" : "/login"}>Rei das Impressoras</Link>
           </div>
 
           {user && (
@@ -51,9 +51,9 @@ export default function Header() {
 
                 {isDropdownOpen && (
                   <div className="dropdown-menu">
-                    <Link href="/dashboard" className="dropdown-item">
+                    <Link href="/print-center" className="dropdown-item">
                       <Layout size={16} />
-                      <span>Painel</span>
+                      <span>Central de Impressão</span>
                     </Link>
                     <Link href="/configuracoes" className="dropdown-item">
                       <Settings size={16} />
